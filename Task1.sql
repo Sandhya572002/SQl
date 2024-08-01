@@ -28,7 +28,7 @@ insert into LLR_INFO values (20,'Christopher',33, '1717 Fir Court', '2023-08-19'
 
 create table LLR_Test_INFO(test_id int,llr_id int,test_date date,test_result varchar(20),conducted_by varchar(20),
 score int,comments varchar(20),test_type varchar(20),test_location varchar(20),address varchar(20),primary key(test_id),
-foreign key(llr_id)references LLR_INFO(llr_id));
+foreign key(llr_id)references LLR_INFO(llr_id)on delete cascade on update cascade);
 
 select * from LLR_Test_INFO;
 insert into LLR_Test_INFO values (1, 1,'2024-01-15', 'Pass','John ', 85, 'Well done', 'Written', 'City Center', '123 Elm');
@@ -54,7 +54,7 @@ insert into LLR_Test_INFO values (20, 20,'2024-08-25','Fail','Olivia ', 63, 'Rev
 
 create table DRIVING_LICENSE_INFO(dl_id int,llr_id int,test_id int,issue_date date,expiry_date date ,
 class varchar(20),restrictions varchar(20),statuss varchar(20),address varchar(20),phoneno bigint,primary key(dl_id),
-foreign key(test_id)references LLR_Test_INFO(test_id));
+foreign key(test_id)references LLR_Test_INFO(test_id)on delete cascade on update cascade);
 
 select * from DRIVING_LICENSE_INFO;
 insert into DRIVING_LICENSE_INFO values(1, 1, 1, '2024-01-20', '2029-01-20', 'A', 'None', 'Active', '123 Elm St', 1234567890);
@@ -79,8 +79,9 @@ insert into DRIVING_LICENSE_INFO values(19, 19, 19, '2024-07-20', '2029-07-20', 
 insert into DRIVING_LICENSE_INFO values(20, 20, 20, '2024-08-15', '2029-08-15', 'B', 'None', 'Expired', '468 Hickory St', 2345678901);
 
 create table DRIVING_LICENSE_TEST_INFO(dl_id int,test_date date,test_result date,conducted_by varchar(20),score int,comments varchar(20),
-test_type varchar(20),test_location varchar(20),phono bigint,email varchar(20),foreign key(dl_id)references DRIVING_LICENSE_INFO(dl_id));
+test_type varchar(20),test_location varchar(20),phono bigint,email varchar(20),foreign key(dl_id)references DRIVING_LICENSE_INFO(dl_id)on delete cascade on update cascade);
 alter table DRIVING_LICENSE_TEST_INFO modify test_result varchar(20);
+
 desc DRIVING_LICENSE_TEST_INFO;
 select * from DRIVING_LICENSE_TEST_INFO;
 insert into DRIVING_LICENSE_TEST_INFO values(1, '2024-01-25', 'Pass', 'Alice Brown', 80, 'Well executed', 'Written', 'City Center', 1234567890, 'john.@example.com');
@@ -104,4 +105,12 @@ insert into DRIVING_LICENSE_TEST_INFO values(18, '2024-06-20', 'Fail', 'Rachel B
 insert into DRIVING_LICENSE_TEST_INFO values(19, '2024-07-25', 'Pass', 'Sam Davis', 82, 'Good job', 'Written', 'City Center', 1234567890, 'quinn.@example.com');
 insert into DRIVING_LICENSE_TEST_INFO values(20, '2024-08-18', 'Fail', 'Tina Martin', 64, 'Needs improvement', 'Practical', 'Suburban Area', 2345678901, 'rachel.@example.com');
 
+insert into LLR_INFO(llr_id,llr_name)values(1,'Johne')on duplicate key update llr_name='sandhya';
+insert into DRIVING_LICENSE_TEST_INFO(score,conducted_by,test_type)values(80,'Alice Brown','pratical')on duplicate key update test_type='pratical';
+insert into DRIVING_LICENSE_INFO(dl_id,class)values(1,'A')on duplicate key update class='B';
+insert into LLR_Test_INFO(test_id,llr_id,test_result,score)values(1,1,'pass',85)on duplicate key update test_result='fail';
+insert into LLR_Test_INFO(test_id,test_result,score,address)values(1,'fail',80,'123 Elm')on duplicate key update test_result='fail';
 
+replace into LLR_INFO (llr_id,llr_name,age,address,issue_date,expiry_date,gender,phneno,email,statues)values(1,'bhavya',22,'banglore','2023-01-16','2024-01-16','female',8904906637,'sandhya@gmail.com','active');
+replace into LLR_Test_INFO (test_id,test_result)values(2,'pass');
+replace into DRIVING_LICENSE_INFO (dl_id,class,statuss)values(7,'C','active');
